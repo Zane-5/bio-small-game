@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Praise</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Plant Praise</h1>
+            <p class="subtitle">Click any plant to praise it and release oxygen!</p>
+        </header>
+        
+        <div class="plants-container">
+            <!-- 树木区域 -->
+            <div class="plant-category">
+                <h2>Trees</h2>
+                <div class="plants-grid">
+                    <!-- 树木图标将用JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 植物区域 -->
+            <div class="plant-category">
+                <h2>Plants</h2>
+                <div class="plants-grid">
+                    <!-- 植物图标将用JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 花朵区域 -->
+            <div class="plant-category">
+                <h2>Flowers</h2>
+                <div class="plants-grid">
+                    <!-- 花朵图标将用JS动态生成 -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="praise-display">
+            <p id="praise-text">Click a plant to see praise here...</p>
+        </div>
+        
+        <div class="stats">
+            <p>Praises collected: <span id="praise-count">0</span>/27</p>
+        </div>
+        
+        <div class="instructions">
+            <p><i class="fas fa-mouse-pointer"></i> Click any plant to praise it</p>
+            <p><i class="fas fa-recycle"></i> Each click releases oxygen bubbles</p>
+            <p><i class="fas fa-book"></i> Try to collect all 27 unique praises</p>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
