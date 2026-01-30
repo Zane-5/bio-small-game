@@ -3,58 +3,752 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plant Praise</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Plant Praise Game</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: #2e7d32;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-container {
+            max-width: 1000px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            border: 1px solid rgba(46, 125, 50, 0.1);
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: #4caf50;
+        }
+
+        .plants-section {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .plant-category {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .plant-category h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #a5d6a7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .plants-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .plant {
+            background: linear-gradient(145deg, #ffffff, #f5f5f5);
+            border-radius: 20px;
+            padding: 25px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .plant:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(76, 175, 80, 0.2);
+            border-color: #4caf50;
+        }
+
+        .plant:active {
+            transform: translateY(-5px) scale(0.98);
+        }
+
+        .plant-icon {
+            font-size: 4.5rem;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .plant:hover .plant-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .plant-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .plant-desc {
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .trees .plant-icon {
+            color: #8b4513;
+        }
+
+        .plants .plant-icon {
+            color: #2e7d32;
+        }
+
+        .flowers .plant-icon {
+            color: #e91e63;
+        }
+
+        .praise-display {
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 40px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 30px rgba(76, 175, 80, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .praise-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ffeb3b, #ff9800);
+        }
+
+        #praise-text {
+            font-size: 1.8rem;
+            color: white;
+            font-style: italic;
+            line-height: 1.6;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: opacity 0.5s ease;
+        }
+
+        .stats {
+            background-color: #e8f5e9;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-item {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-item i {
+            font-size: 1.5rem;
+        }
+
+        .instructions {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid #e8f5e9;
+        }
+
+        .instruction {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+        }
+
+        .instruction i {
+            color: #4caf50;
+            font-size: 1.5rem;
+            background-color: #e8f5e9;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bubble {
+            position: fixed;
+            background: radial-gradient(circle, rgba(76, 175, 80, 0.8), rgba(46, 125, 50, 0.6));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            pointer-events: none;
+            animation: floatUp 2.5s ease-out forwards;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120px) scale(0.3) rotate(180deg);
+                opacity: 0;
+            }
+        }
+
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #a5d6a7;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .footer i {
+            color: #e91e63;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .plants-section {
+                flex-direction: column;
+            }
+            
+            .stat-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .instructions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            #praise-text {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Plant Praise</h1>
-            <p class="subtitle">Click any plant to praise it and release oxygen!</p>
-        </header>
+    <div class="game-container">
+        <div class="header">
+            <h1><i class="fas fa-leaf"></i> Plant Praise Game</h1>
+            <p>Click any plant to praise it and release oxygen bubbles!</p>
+        </div>
         
-        <div class="plants-container">
-            <!-- 树木区域 -->
-            <div class="plant-category">
-                <h2>Trees</h2>
-                <div class="plants-grid">
-                    <!-- 树木图标将用JS动态生成 -->
+        <div class="plants-section">
+            <!-- Trees Section -->
+            <div class="plant-category trees">
+                <h2><i class="fas fa-tree"></i> Trees</h2>
+                <div class="plants-container">
+                    <div class="plant" data-type="tree" data-index="0">
+                        <div class="plant-icon"><i class="fas fa-tree"></i></div>
+                        <div class="plant-name">Oak Tree</div>
+                        <div class="plant-desc">Strong and resilient</div>
+                    </div>
+                    
+                    <div class="plant" data-type="tree" data-index="1">
+                        <div class="plant-icon"><i class="fas fa-tree"></i></div>
+                        <div class="plant-name">Pine Tree</div>
+                        <div class="plant-desc">Evergreen and enduring</div>
+                    </div>
+                    
+                    <div class="plant" data-type="tree" data-index="2">
+                        <div class="plant-icon"><i class="fas fa-tree"></i></div>
+                        <div class="plant-name">Cherry Blossom</div>
+                        <div class="plant-desc">Beautiful and fleeting</div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 植物区域 -->
-            <div class="plant-category">
-                <h2>Plants</h2>
-                <div class="plants-grid">
-                    <!-- 植物图标将用JS动态生成 -->
+            <!-- Plants Section -->
+            <div class="plant-category plants">
+                <h2><i class="fas fa-leaf"></i> Plants</h2>
+                <div class="plants-container">
+                    <div class="plant" data-type="plant" data-index="0">
+                        <div class="plant-icon"><i class="fas fa-leaf"></i></div>
+                        <div class="plant-name">Fern</div>
+                        <div class="plant-desc">Delicate and ancient</div>
+                    </div>
+                    
+                    <div class="plant" data-type="plant" data-index="1">
+                        <div class="plant-icon"><i class="fas fa-cactus"></i></div>
+                        <div class="plant-name">Cactus</div>
+                        <div class="plant-desc">Adaptable and resilient</div>
+                    </div>
+                    
+                    <div class="plant" data-type="plant" data-index="2">
+                        <div class="plant-icon"><i class="fas fa-leaf"></i></div>
+                        <div class="plant-name">Aloe Vera</div>
+                        <div class="plant-desc">Healing and soothing</div>
+                    </div>
                 </div>
             </div>
             
-            <!-- 花朵区域 -->
-            <div class="plant-category">
-                <h2>Flowers</h2>
-                <div class="plants-grid">
-                    <!-- 花朵图标将用JS动态生成 -->
+            <!-- Flowers Section -->
+            <div class="plant-category flowers">
+                <h2><i class="fas fa-spa"></i> Flowers</h2>
+                <div class="plants-container">
+                    <div class="plant" data-type="flower" data-index="0">
+                        <div class="plant-icon"><i class="fas fa-seedling"></i></div>
+                        <div class="plant-name">Rose</div>
+                        <div class="plant-desc">Symbol of love and beauty</div>
+                    </div>
+                    
+                    <div class="plant" data-type="flower" data-index="1">
+                        <div class="plant-icon"><i class="fas fa-sun"></i></div>
+                        <div class="plant-name">Sunflower</div>
+                        <div class="plant-desc">Bright and cheerful</div>
+                    </div>
+                    
+                    <div class="plant" data-type="flower" data-index="2">
+                        <div class="plant-icon"><i class="fas fa-spa"></i></div>
+                        <div class="plant-name">Tulip</div>
+                        <div class="plant-desc">Elegant and simple</div>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div class="praise-display">
-            <p id="praise-text">Click a plant to see praise here...</p>
+            <p id="praise-text">Click a plant to see a praise message here...</p>
         </div>
         
         <div class="stats">
-            <p>Praises collected: <span id="praise-count">0</span>/27</p>
+            <div class="stat-item">
+                <i class="fas fa-star"></i>
+                <span>Praises collected: <span id="praise-count">0</span>/27</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-wind"></i>
+                <span>Oxygen released: <span id="oxygen-count">0</span></span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-mouse-pointer"></i>
+                <span>Total clicks: <span id="click-count">0</span></span>
+            </div>
         </div>
         
         <div class="instructions">
-            <p><i class="fas fa-mouse-pointer"></i> Click any plant to praise it</p>
-            <p><i class="fas fa-recycle"></i> Each click releases oxygen bubbles</p>
-            <p><i class="fas fa-book"></i> Try to collect all 27 unique praises</p>
+            <div class="instruction">
+                <i class="fas fa-hand-point-up"></i>
+                <span>Click any plant to praise it</span>
+            </div>
+            <div class="instruction">
+                <i class="fas fa-bubbles"></i>
+                <span>Each click releases oxygen bubbles</span>
+            </div>
+            <div class="instruction">
+                <i class="fas fa-book-open"></i>
+                <span>Try to collect all 27 unique praises</span>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Made with <i class="fas fa-heart"></i> for plant lovers everywhere | Keep praising plants!</p>
         </div>
     </div>
-    
-    <script src="script.js"></script>
+
+    <script>
+        // 植物赞美数据
+        const plantsData = {
+            tree: [
+                {
+                    name: "Oak Tree",
+                    praises: [
+                        "You stand tall through every season, a symbol of resilience and strength.",
+                        "Your branches reach for the sky while your roots hold the earth firmly.",
+                        "In your shade, the world finds rest, quiet, and shelter.",
+                        "Centuries pass, yet you remain, witnessing history unfold beneath your boughs."
+                    ]
+                },
+                {
+                    name: "Pine Tree",
+                    praises: [
+                        "Evergreen and enduring, you wear your needles like a crown of perseverance.",
+                        "Your scent carries the memory of ancient forests and fresh beginnings.",
+                        "Through winter snows and summer heat, you remain steadfast and strong.",
+                        "You whisper ancient secrets when the wind passes through your needles."
+                    ]
+                },
+                {
+                    name: "Cherry Blossom",
+                    praises: [
+                        "Your fleeting beauty reminds us to cherish each precious moment.",
+                        "Like pink snow, your petals dance gracefully in the spring breeze.",
+                        "You teach us that endings can be as beautiful as beginnings.",
+                        "A brief but brilliant celebration of life's transient beauty."
+                    ]
+                }
+            ],
+            plant: [
+                {
+                    name: "Fern",
+                    praises: [
+                        "You thrive in the quiet corners, bringing life and beauty to every space.",
+                        "Your delicate fronds unfold like nature's own intricate lacework.",
+                        "Ancient and graceful, you connect us to primeval forests long gone.",
+                        "In your quiet growth, you teach the gentle art of patience."
+                    ]
+                },
+                {
+                    name: "Cactus",
+                    praises: [
+                        "You flourish where others cannot, a powerful lesson in adaptation.",
+                        "Your spines protect a heart full of precious water and life.",
+                        "In the harshest conditions, you find a way to bloom spectacularly.",
+                        "You teach us that true strength requires both resilience and flexibility."
+                    ]
+                },
+                {
+                    name: "Aloe Vera",
+                    praises: [
+                        "Healer and soother, you offer comfort and relief with every leaf.",
+                        "Your quiet presence in a pot brings wellness, calm, and serenity.",
+                        "Simple, useful, and always generous with your healing gifts.",
+                        "A living medicine cabinet, always ready to help and heal."
+                    ]
+                }
+            ],
+            flower: [
+                {
+                    name: "Rose",
+                    praises: [
+                        "Your beauty is a fleeting gift that reminds us to cherish each moment.",
+                        "Even with thorns, you offer your exquisite beauty to the world.",
+                        "Symbol of love, you speak a language that all hearts understand.",
+                        "Each petal unfolds a unique story of elegance, grace, and passion."
+                    ]
+                },
+                {
+                    name: "Sunflower",
+                    praises: [
+                        "You follow the light, teaching us to always face hope and optimism.",
+                        "Your golden face brings sunshine and joy even on cloudy days.",
+                        "Tall and bright, you turn fields into shimmering seas of gold.",
+                        "You remind us to always turn toward what nourishes and uplifts us."
+                    ]
+                },
+                {
+                    name: "Tulip",
+                    praises: [
+                        "Elegant and simple, your cup holds morning dew like precious jewels.",
+                        "You color the spring with your cheerful, upright, and vibrant blooms.",
+                        "From a humble bulb, you rise magnificently to greet the sun.",
+                        "A perfect example of nature's simple yet stunning perfection."
+                    ]
+                }
+            ]
+        };
+
+        // 游戏状态
+        let collectedPraises = new Set();
+        let totalClicks = 0;
+        let oxygenReleased = 0;
+        
+        // DOM 元素
+        const praiseText = document.getElementById('praise-text');
+        const praiseCount = document.getElementById('praise-count');
+        const oxygenCount = document.getElementById('oxygen-count');
+        const clickCount = document.getElementById('click-count');
+        
+        // 初始化 - 为每个植物添加点击事件
+        function initializeGame() {
+            console.log("Game initializing...");
+            
+            // 获取所有植物元素
+            const plantElements = document.querySelectorAll('.plant');
+            console.log(`Found ${plantElements.length} plant elements`);
+            
+            // 为每个植物添加点击事件监听器
+            plantElements.forEach((plant, index) => {
+                plant.addEventListener('click', handlePlantClick);
+                console.log(`Added click listener to plant ${index + 1}: ${plant.querySelector('.plant-name').textContent}`);
+            });
+            
+            // 添加一个测试点击事件到整个容器
+            document.querySelector('.game-container').addEventListener('click', function(e) {
+                if (e.target.classList.contains('plant') || e.target.closest('.plant')) {
+                    console.log("Plant clicked via container event delegation");
+                }
+            });
+            
+            // 初始提示
+            setTimeout(() => {
+                if (collectedPraises.size === 0) {
+                    praiseText.innerHTML = '<span style="text-shadow: 0 2px 5px rgba(0,0,0,0.3);">Click any plant to begin praising! 🌿</span>';
+                }
+            }, 1000);
+            
+            console.log("Game initialization complete!");
+        }
+        
+        // 处理植物点击
+        function handlePlantClick(event) {
+            console.log("Plant clicked!");
+            
+            const plantElement = event.currentTarget;
+            const plantType = plantElement.getAttribute('data-type');
+            const plantIndex = parseInt(plantElement.getAttribute('data-index'));
+            
+            console.log(`Clicked: ${plantType} at index ${plantIndex}`);
+            
+            // 获取植物数据
+            const plantData = plantsData[plantType][plantIndex];
+            
+            // 随机选择一句赞美
+            const praiseIndex = Math.floor(Math.random() * plantData.praises.length);
+            const praise = plantData.praises[praiseIndex];
+            
+            // 显示赞美
+            praiseText.style.opacity = '0.5';
+            setTimeout(() => {
+                praiseText.textContent = `"${praise}"`;
+                praiseText.style.opacity = '1';
+            }, 200);
+            
+            // 创建气泡效果
+            createBubbles(plantElement);
+            
+            // 更新统计
+            updateStats(plantType, plantIndex, praiseIndex);
+            
+            // 添加点击动画
+            plantElement.style.transform = 'translateY(-5px) scale(0.97)';
+            setTimeout(() => {
+                plantElement.style.transform = '';
+            }, 200);
+            
+            // 更新总点击次数
+            totalClicks++;
+            clickCount.textContent = totalClicks;
+            
+            // 每5次点击改变提示
+            if (totalClicks % 5 === 0) {
+                const messages = [
+                    "Keep praising plants to release more oxygen!",
+                    "Each praise makes the world a little greener.",
+                    "Plants thrive on your kind words!",
+                    "Nature smiles with every click.",
+                    "You're becoming a true plant appreciator!",
+                    "The more you praise, the more oxygen we have!",
+                    "Every plant deserves a compliment!"
+                ];
+                const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                document.querySelector('.header p').textContent = randomMessage;
+            }
+        }
+        
+        // 创建气泡效果
+        function createBubbles(plantElement) {
+            const rect = plantElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // 创建3-6个气泡
+            const bubbleCount = 3 + Math.floor(Math.random() * 4);
+            
+            for (let i = 0; i < bubbleCount; i++) {
+                setTimeout(() => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    bubble.textContent = 'O₂';
+                    
+                    // 随机大小和位置
+                    const size = 20 + Math.random() * 25;
+                    const startX = centerX - 30 + Math.random() * 60;
+                    const startY = centerY - 20 + Math.random() * 40;
+                    
+                    // 应用样式
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    bubble.style.left = `${startX}px`;
+                    bubble.style.top = `${startY}px`;
+                    bubble.style.fontSize = `${size / 3}px`;
+                    
+                    // 添加到页面
+                    document.body.appendChild(bubble);
+                    
+                    // 动画结束后移除气泡
+                    setTimeout(() => {
+                        if (bubble.parentNode) {
+                            bubble.parentNode.removeChild(bubble);
+                        }
+                    }, 2500);
+                }, i * 100); // 错开气泡出现时间
+            }
+        }
+        
+        // 更新统计信息
+        function updateStats(plantType, plantIndex, praiseIndex) {
+            // 生成唯一键
+            const praiseKey = `${plantType}-${plantIndex}-${praiseIndex}`;
+            
+            // 检查是否已收集过此赞美
+            if (!collectedPraises.has(praiseKey)) {
+                collectedPraises.add(praiseKey);
+                praiseCount.textContent = collectedPraises.size;
+                
+                // 如果收集了所有赞美
+                if (collectedPraises.size === 27) {
+                    praiseText.innerHTML = '<span style="color:#FFEB3B; font-weight:bold;">Congratulations! You\'ve collected all 27 praises! 🎉</span>';
+                }
+            }
+            
+            // 更新氧气计数
+            oxygenReleased += Math.floor(Math.random() * 3) + 2;
+            oxygenCount.textContent = oxygenReleased;
+        }
+        
+        // 添加一些背景气泡作为装饰
+        function createBackgroundBubbles() {
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% 几率创建背景气泡
+                    const bubble = document.createElement('div');
+                    bubble.className = 'bubble';
+                    bubble.textContent = 'O₂';
+                    
+                    const size = 15 + Math.random() * 20;
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = window.innerHeight + 20;
+                    
+                    bubble.style.width = `${size}px`;
+                    bubble.style.height = `${size}px`;
+                    bubble.style.left = `${startX}px`;
+                    bubble.style.top = `${startY}px`;
+                    bubble.style.fontSize = `${size / 3}px`;
+                    bubble.style.background = 'radial-gradient(circle, rgba(76, 175, 80, 0.6), rgba(46, 125, 50, 0.4))';
+                    bubble.style.opacity = '0.6';
+                    bubble.style.zIndex = '1';
+                    
+                    document.body.appendChild(bubble);
+                    
+                    setTimeout(() => {
+                        if (bubble.parentNode) {
+                            bubble.parentNode.removeChild(bubble);
+                        }
+                    }, 3500);
+                }
+            }, 3000);
+        }
+        
+        // 页面加载完成后初始化游戏
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log("DOM fully loaded and parsed");
+            initializeGame();
+            createBackgroundBubbles();
+            
+            // 添加键盘快捷键支持
+            document.addEventListener('keydown', (e) => {
+                // R键重置游戏
+                if (e.key === 'r' || e.key === 'R') {
+                    if (confirm("Reset all game statistics?")) {
+                        collectedPraises.clear();
+                        oxygenReleased = 0;
+                        totalClicks = 0;
+                        praiseCount.textContent = '0';
+                        oxygenCount.textContent = '0';
+                        clickCount.textContent = '0';
+                        praiseText.textContent = "Game reset! Start praising plants again!";
+                    }
+                }
+                
+                // H键显示帮助
+                if (e.key === 'h' || e.key === 'H') {
+                    alert("Plant Praise Game Help:\n\n• Click any plant to praise it\n• Each click releases oxygen bubbles\n• Try to collect all 27 unique praises\n• Press R to reset game stats\n• Made with love for plant lovers!");
+                }
+            });
+            
+            // 添加控制台欢迎信息
+            console.log("%c🌿 Plant Praise Game 🌿", "color: #2e7d32; font-size: 18px; font-weight: bold;");
+            console.log("%cClick plants to praise them and release oxygen!", "color: #4caf50;");
+        });
+        
+        // 备用初始化方法 - 确保游戏在页面完全加载后运行
+        window.onload = function() {
+            console.log("Window fully loaded");
+            // 游戏已经在DOMContentLoaded中初始化，这里只是确保
+            if (document.readyState === 'complete') {
+                console.log("Document readyState is complete");
+            }
+        };
+        
+        // 添加错误处理
+        window.onerror = function(msg, url, line, col, error) {
+            console.log("Error: " + msg + " at " + line + ":" + col);
+            return false;
+        };
+    </script>
 </body>
 </html>
